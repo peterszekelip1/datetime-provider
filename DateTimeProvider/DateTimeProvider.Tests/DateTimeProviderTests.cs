@@ -37,4 +37,15 @@ public class DateTimeProviderTests
         utcNow1.Should().Be(fakeUtcNow1);
         utcNow2.Should().Be(fakeUtcNow2);
     }
+    
+    [Fact(DisplayName = "Given no DateTimeProviderContexts is defined " +
+                        "When retrieving DateTimeProvider.Instance.UtcNow " +
+                        "Then the current machine time will be returned")]
+    public void DateTimeProviderTests_003()
+    {
+        var utcNow = DateTime.UtcNow;
+        var utcNowFromProvider = DateTimeProvider.Instance.UtcNow;
+        
+        utcNow.ToString("s").Should().Be(utcNowFromProvider.ToString("s"));
+    }
 }
