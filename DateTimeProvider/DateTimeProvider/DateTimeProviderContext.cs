@@ -1,7 +1,7 @@
 ﻿namespace DateTimeProvider;
 
 public class DateTimeProviderContext : IDisposable
-{
+{ 
     private static readonly AsyncLocal<Stack<DateTimeProviderContext>> Stack = new ();
 
     public DateTime ContextUtcNow;
@@ -19,10 +19,13 @@ public class DateTimeProviderContext : IDisposable
         Stack.Value.Push(this);
     }
 
-    public static DateTimeProviderContext? Current => (Stack.Value?.Count ?? 0) == 0 ? null : Stack.Value.Peek();
+    public static DateTimeProviderContext? Current => Stack is {Value.Count: > 0} ? Stack.Value.Peek() : null;
 
     public void Dispose()
     {
-        Stack.Value.Pop();
+        if (Stack is {Value.Count: > 0})
+        {
+            Stack.Value.Pop();            
+        }
     }
 }
